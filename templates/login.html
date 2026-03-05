@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="inner">
+        <div class="header">
+            <p class="title">Разметка зубов</p>
+            <p class="subtitle">Войдите, чтобы начать разметку</p>
+        </div>
+        <form class="form" id="loginForm">
+            <div class="input-field">
+                <label for="phonenumber">Номер телефона</label>
+                <input type="text" id="phonenumber" name="username" placeholder="+7 (___) ___-__-__" maxlength="18">
+            </div>
+            <div class="input-field">
+                <label for="status">Статус</label>
+                <select id="roleselect" name="roleselect">
+                    <option value="">Выберите свой статус</option>
+                    {% for role in roles %}
+                        <option value="{{ role.name }}">{{ role.name_ru }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-field">
+                <label for="accesscode">Код доступа</label>
+                <input type="text" id="accesscode" name="password" placeholder="Введите код доступа">
+            </div>
+            <p class="info">Если у вас нет кода доступа, обратитесь к преподавателю</p>
+            <button type="submit" class="submit-button" disabled>Войти</button>
+        </form>
+    </div>
+    <script type="module" src="/static/js/login.js"></script>
+{% endblock content %}

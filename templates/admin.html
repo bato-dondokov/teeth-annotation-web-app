@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+    <dev class="goback" id="logoutBtn">
+        <img src="../static/icons/Arrow left.svg" class="icon" alt="">
+        <p>Выйти</p>
+    </dev>
+    <div class="inner">
+        <div class="header">
+            <p class="title">Панель администратора</p>
+            <p class="subtitle">Выберите нужную команду</p>
+        </div>
+        <div class="menu">
+            <div class="separator"></div>
+
+            <a href="{{ url_for("progress_page") }}" class="menu-item">
+                <div class="menu-text">Посмотреть прогресс экспертов</div>
+            </a>
+            <div class="separator"></div>
+            <a href="{{ url_for("add_xray_page") }}" class="menu-item">
+                <div class="menu-text">Добавить снимок</div>
+            </a>
+            <div class="separator"></div>
+            <a href="{{ url_for("register_page") }}" class="menu-item">
+                <div class="menu-text">Добавить номер для доступа</div>
+            </a>
+            <div class="separator"></div>
+            <div class="menu-item" id="downloadBtn">
+                <div class="menu-text">Выгрузить БД</div>
+            </div>
+            <div class="separator"></div>
+        </div>
+    </div>
+    <script type="module" src="/static/js/admin.js"></script>
+{% endblock content %}

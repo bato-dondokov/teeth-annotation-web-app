@@ -1,0 +1,49 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.pyo
+*.pyc
+*.pyd
+*.pyo
+
+# Кеши и временные файлы
+*.log
+*.tmp
+*.swp
+*.swo
+.DS_Store
+
+# Виртуальные окружения
+venv/
+.env/
+.venv/
+env/
+ENV/
+
+# --- IDE / редакторы ---
+.vscode/
+.idea/
+*.code-workspace
+
+# --- База данных и артефакты ---
+*.sqlite3
+*.db
+*.db-journal
+teeth_annotation.db
+
+# --- Секреты и локальные настройки ---
+*.secret
+*.key
+*.pem
+*.crt
+*.bak
+
+# --- .env файл ---
+.env
+
+# --- Директории с изображениями ---
+static/xrays/
+static/teeth/

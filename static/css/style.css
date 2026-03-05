@@ -1,0 +1,515 @@
+:root {
+    --color-text-secondary: #757575;
+    --color-text-default: #1E1E1E;
+    --color-border-default: #d9d9d9;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}
+
+.frame {
+    width: 100%;
+    max-width: 400px;   
+    margin: 0 auto; 
+
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+
+    padding: 8px;
+}
+
+.inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;               
+    width: 100%;
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;               
+    
+    width: 100;    
+
+}
+
+.title {
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.subtitle {
+    color: var(--color-text-default);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.separator {
+    height: 1px;
+    background-color: var(--color-border-default);
+    align-self: stretch;
+    margin: 0px 0px;
+}
+
+.menu{
+    display: flex;
+    flex-direction: column;
+    gap: 0;               
+    width: 100%;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;                    
+    
+    width: 100%;    
+    font-size: 16px;
+    font-weight: 400;
+    padding: 16px 0px;
+
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    color: var(--color-text-secondary);
+
+}
+
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; 
+}
+
+label {
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--color-text-default);
+}
+
+input {
+    padding: 10px 12px;
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+input:focus {
+    border-color: #000000;
+    outline: none;
+}
+
+select {
+    padding: 10px 12px;
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+select:focus {
+    border-color: #000000;
+    outline: none;
+}
+
+.submit-button {
+    padding: 10px 12px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submit-button:disabled {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+
+.preview-list{
+    display: flex;
+    flex-direction: column;
+    gap: 16px; 
+    width: 100%;
+}
+
+.preview-item {
+    display: flex;
+    flex-direction: row;
+    gap: 4px; 
+    width: 100%;
+}
+
+.preview-img{
+    width: 100px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.preview-desc {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; 
+    width: 100%;
+}
+
+.preview-desc-first-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview-filename {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-default);
+    margin: 0;
+}
+
+.delete-btn {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.delete-btn:hover {
+    opacity: 0.6;
+}
+
+.preview-desc-second-line {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.progress-list{
+    display: flex;
+    flex-direction: column;
+    gap: 16px; 
+    width: 100%;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; 
+    width: 100%;
+}
+
+.progress-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-default);
+    margin: 0;
+}
+
+.progress-desc {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.progress-bar {
+    flex: 1;
+    width: 100%;
+    height: 5px;
+    background-color: var(--color-border-default);
+    align-self: stretch;
+    margin: 6px 0px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 60%;
+  background-color: #4CAF50;
+  transition: width 0.3s ease;
+}
+
+.progress-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-percentage {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+.goback{
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: var(--color-text-default);
+}
+
+
+.upload-block {
+    width: 100%;
+    max-width: 500px;
+
+    padding: 40px 0px;
+    
+    background-color: #F3F4F6;     
+    border: 2px dashed #D1D5DB;     
+    border-radius: 8px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 16px;
+
+    text-align: center;
+    color: var(--color-text-default);
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.upload-block:hover {
+    background-color: #E5E7EB;
+    border-color: #9CA3AF;
+}
+
+.upload-icon {
+    width: 48px;
+    height: 48px;
+    color: #9CA3AF;
+}
+
+.progress-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.tab {
+    flex: 1;                 
+    padding: 12px 0;
+    text-align: center;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    color: #6B7280;
+    border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+    color: #111827;
+    border-bottom: 2px solid #000;
+}
+
+.tab:hover {
+    color: #111827;
+}
+
+.form-block {
+  display: none;
+}
+
+.form-block.active {
+  display: block;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.bytable{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 1000;
+
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: #ffffff;
+    padding: 30px 25px;
+    border-radius: 14px;
+    text-align: center;
+    width: 320px;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+    transform: scale(0.95);
+    transition: transform 0.2s ease;
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+#statusModalMessage {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 18px;
+    line-height: 1.4;
+}
+
+#statusModalBtn {
+    padding: 9px 22px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.modal-content.success {
+    border: 2px solid #16A34A;
+}
+
+.modal-content.success .modal-icon {
+    color: #16A34A;
+}
+
+.modal-content.success #statusModalBtn {
+    background: #16A34A;
+    color: white;
+}
+
+.modal-content.success #statusModalBtn:hover {
+    background: #15803D;
+}
+
+.modal-content.error {
+    border: 2px solid #DC2626;
+}
+
+.modal-content.error .modal-icon {
+    color: #DC2626;
+}
+
+.modal-content.error #statusModalBtn {
+    background: #DC2626;
+    color: white;
+}
+
+.modal-content.error #statusModalBtn:hover {
+    background: #B91C1C;
+}
+
+.image-block {
+    display: flex;
+    width: 100%;
+    gap: 16px;
+}
+
+.image-block img {
+    min-width: 0;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+#thumbnail {
+    flex: 4;
+}
+
+#thumbnail-cropped {
+    flex: 1;
+}
+
+.image-block img:hover {
+    transform: scale(1.05);
+}
+
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 0 0 20px #fff;
+}
+
+#annotation-desc {
+    font-size: 16px;
+    color: var(--color-text-default);
+    margin: 0;
+}
+
+#form2.active {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;               
+    width: 100%;
+}
+
+.info {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin: 0;
+}

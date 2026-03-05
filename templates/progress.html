@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+    <a href="{{ url_for('admin_page') }}" class="goback">
+        <img src="../static/icons/Arrow left.svg" class="icon" alt="">
+        <p>Вернуться назад</p>
+    </a>
+    <div class="inner">
+        <div class="header">
+            <p class="title">Панель администратора</p>
+            <p class="subtitle">Прогресс экспертов</p>
+        </div>
+        <div class="separator"></div>
+        <div class="progress-list">
+            {% for user in users %}
+                <div class="progress-item">
+                    <p class="progress-name">{{ user.name }}</p>
+                    <p class="progress-desc">{{ user.role }} (диапазон снимков: {{ user.range_start }}-{{ user.range_end }})</p>
+                    <div class="progress-wrapper">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ user.progress }}%"></div>
+                        </div>
+                        <div class="progress-percentage">{{ user.progress }}% ({{ user.current_tooth - user.range_start}} из {{ user.range_end - user.range_start + 1 }})</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script type="module" src="/static/js/admin.js"></script>
+{% endblock content %}

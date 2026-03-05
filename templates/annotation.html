@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% block content %}
+    <dev class="goback" id="logoutBtn">
+        <img src="../static/icons/Arrow left.svg" class="icon" alt="">
+        <p>Выйти</p>
+    </dev>
+    <div class="inner">
+        <div class="header">
+            <p class="title">Разметка зубов</p>
+            <p class="subtitle">Выберите нужные варианты</p>
+        </div>
+        <div class="separator"></div>
+        <div class="image-block">
+            <img src="" alt="Пример" id="thumbnail">
+            <img src="" alt="Пример" id="thumbnail-cropped">
+        </div>
+
+        <!-- Лайтбокс -->
+        <div class="lightbox" id="lightbox">
+            <img src="" alt="Полноэкранная картинка" id="lightbox-img">
+        </div>
+        <div class="annotation-text">
+            <p class="subtitle" id="annotation-desc">Разметка зубов</p>
+            <p class="title" id="annotation-instructions">Выберите нужные варианты</p>
+        </div>
+        <div class="separator"></div>
+        <form class="form" id="annotationForm">
+            <div class="input-field">
+                <label for="condition">Исходное состояние</label>
+                <select id="condition" name="condition">
+                    <option value="">Выберите исходное состояние</option>
+                    {% for condition in conditions %}
+                        <option value="{{ condition.id }}">{{ condition.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-field">
+                <label for="pathology">Патология</label>
+                <select id="pathology" name="pathology">
+                    <option value="">Выберите патологию</option>
+                    {% for pathology in pathologies %}
+                        <option value="{{ pathology.id }}">{{ pathology.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-field">
+                <label for="recommendation">Рекомендация</label>
+                <select id="recommendation" name="recommendation">
+                    <option value="">Выберите рекомендацию</option>
+                    {% for recommendation in recommendations %}
+                        <option value="{{ recommendation.id }}">{{ recommendation.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-field">
+                <label for="term">Сроки обращения</label>
+                <select id="term" name="term">
+                    <option value="">Выберите сроки обращения</option>
+                    {% for term in terms %}
+                        <option value="{{ term.id }}">{{ term.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="submit-button" disabled>Подтвердить</button>
+        </form>
+    </div>
+    <script type="module" src="/static/js/annotation.js"></script>
+{% endblock content %}

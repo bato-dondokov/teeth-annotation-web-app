@@ -1,0 +1,31 @@
+
+{% extends "layout.html" %}
+{% block content %}
+    <a href="{{ url_for('admin_page') }}" class="goback">
+        <img src="../static/icons/Arrow left.svg" class="icon" alt="">
+        <p>Вернуться назад</p>
+    </a>
+    <div class="inner">
+        <div class="header">
+            <p class="title">Панель администратора</p>
+            <p class="subtitle">Добавление снимков</p>
+        </div>
+        <div class="separator"></div>
+        <div class="upload-block" id="uploadBlock">
+            <svg class="upload-icon" viewBox="0 0 24 24" fill="none">
+                <path d="M12 16V4M12 4L8 8M12 4L16 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M4 20H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+
+            <p>Выберите снимки для загрузки</p>
+
+            <input type="file" id="fileInput" multiple hidden accept="image/*">
+        </div>
+        <div class="separator"></div>
+        <div class="preview-list" id="previewList">
+            <!-- Здесь будут отображаться превью загруженных снимков -->
+        </div>
+        <button class="submit-button" id="uploadBtn">Добавить</button>
+    </div>
+    <script type="module" src="/static/js/add-xray.js"></script>
+{% endblock content %}
