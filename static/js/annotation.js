@@ -17,7 +17,6 @@ async function updateAuth() {
         // Not logged in, redirect to login page
         window.location.href = "/login";        
     } else {
-        console.log("Current user:", user);
         return user;
     }
 }
@@ -28,6 +27,33 @@ if (logoutBtn) {
     logoutBtn.addEventListener('click', logout);
 }
 const user = await updateAuth();
+
+function showCompletionAndStop(id) {
+    Array.from(document.body.children).forEach((el) => {
+        if (el.id !== "statusModal") {
+            el.style.display = "none";
+        }
+    });
+    if (id == 0) {
+        showStatusModal({
+            type: "success",
+            message: "Вы успешно завершили разметку всех назначенных зубов. Спасибо за ваше участие!",
+            onConfirm: () => {
+                window.location.href = "/login";
+            }
+        });
+    } else {
+        showStatusModal({
+            type: "error",
+            message: "Отсутствуют снимки для разметки. Обратитесь к преподавателю.",
+            onConfirm: () => {
+                window.location.href = '/login';
+            }
+        });
+    }
+
+    throw new Error("Annotation flow stopped: there is no more teeth to annotate");
+}
 
 // Проверка наличия JWT‑токена при загрузке страницы.
 // При отсутствии токена пользователь перенаправляется на /login.
@@ -66,8 +92,11 @@ annotationInstructions.textContent = "Пожалуйста, внимательн
  *   и перенаправляет пользователя на /login по подтверждению.
  */
 async function loadImageById(id) {
+    if (id == 0) {
+        showCompletionAndStop(id);
+        return;
+    }
     try {
-        console.log("Loading image for tooth id:", id);
         const response = await fetch(`/api/annotation/tooth/${id}`, {
             method: 'GET',
             headers: {
@@ -80,19 +109,10 @@ async function loadImageById(id) {
             thumbnail.src = blobUrl;
         } else {
             const error = await response.json();
-            showStatusModal({
-                type: "error",
-                message: getErrorMessage(error)
-            });
+            showCompletionAndStop(id, error);
         }
     } catch (err) {
-        showStatusModal({
-            type: "error",
-            message: "Отсутствуют снимки для разметки. Возможно, вы уже завершили разметку всех назначенных зубов.",
-            onConfirm: () => {
-                window.location.href = '/login';
-            }
-        });
+        showCompletionAndStop(id, err);
     }
     try {
         const response2 = await fetch(`/api/annotation/tooth_cropped/${id}`, {
@@ -107,22 +127,10 @@ async function loadImageById(id) {
             thumbnail_cropped.src = blobUrl2;
         } else {
             const error2 = await response2.json();
-            showStatusModal({
-                type: "error",
-                message: getErrorMessage(error2),
-                onConfirm: () => {
-                    window.location.href = '/login';
-                }
-            });
+            showCompletionAndStop(id, error2);
         }
     } catch (err) {
-        showStatusModal({
-            type: "error",
-            message: "Отсутствуют снимки для разметки. Возможно, вы уже завершили разметку всех назначенных зубов.",
-            onConfirm: () => {
-                window.location.href = '/login';
-            }
-        });
+        showCompletionAndStop(id, err);
     }
 }
 
@@ -201,9 +209,6 @@ annotationForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const formData = new FormData(annotationForm);
-    for (const [key, value] of formData.entries()) {
-        console.log(key, value);
-    }
 
     try {
         const response = await fetch('/api/annotation/save', {

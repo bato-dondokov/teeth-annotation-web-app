@@ -40,7 +40,7 @@ async def get_tooth(
     if current_user.role not in ['resident', 'teacher']:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="У вас нет разрешения на получение снимков",
+            detail="У вас нет разрешения на разметку снимков",
         )
     result = await db.execute(
         select(models.Tooth).where(models.Tooth.id == tooth_id)
@@ -50,7 +50,7 @@ async def get_tooth(
     if not tooth or not os.path.exists(tooth.file_name):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Снимок не найден",
+            detail="Отсутствуют снимки для разметки. Обратитесь к преподавателю.",
         ) 
     filename = tooth.file_name
     return FileResponse(
@@ -84,7 +84,7 @@ async def get_cropped_tooth(
     if not tooth or not os.path.exists(tooth.cropped_file_name):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Снимок не найден",
+            detail="Отсутствуют снимки для разметки. Обратитесь к преподавателю.",
         )
     filename = tooth.cropped_file_name
     return FileResponse(

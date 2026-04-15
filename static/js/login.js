@@ -85,9 +85,6 @@ loginForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const formData = new FormData(loginForm);
-    for (const [key, value] of formData.entries()) {
-        console.log(key, value);
-    }
 
     try {
         const response = await fetch('/api/users/token', {

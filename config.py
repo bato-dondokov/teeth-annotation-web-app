@@ -42,8 +42,14 @@ XRAYS_DIR = "static/xrays/"
 """Путь до директории для изображений зубов"""
 TEETH_DIR = "static/teeth/"
 
-"""Путь до файла БД"""
-DB_FILE = "teeth_annotation.db"
+"""Конфигурация базы данных"""
+DB_CONFIG = {
+    'host': 'localhost',
+    'port': 3306,
+    'user': 'YOUR_USER',
+    'password': 'YOUR_PASSWORD',
+    'database': 'YOUR_DATABASE'
+}
 
 """Роли пользователей по умолчанию"""
 DEFAULT_ROLES = {
@@ -55,11 +61,11 @@ DEFAULT_ROLES = {
 """Пользователь по умолчанию, будет добавлен при первом запуске"""
 DEFAULT_USER = {
     'name': 'Admin', 
-    'phone_number': '+7 (XXX) XXX-XX-XX', 
+    'phone_number': '+7 (XXX) XXX-XX-XX', # заменить на реальный номер
     'role': 'admin'
     }
 
-"""Диапазон разметки (количество снимков за сессию)"""
+"""Диапазон разметки (количество снимков на одного пользователя)"""
 ANNOTATION_RANGE = 3
 
 """Названия исходных состояний по умолчанию"""

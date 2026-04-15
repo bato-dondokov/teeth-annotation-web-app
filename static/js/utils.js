@@ -131,7 +131,8 @@ export function formatPhone(value) {
 export function showStatusModal({
     type = "success", // success | error
     message = "",
-    onConfirm = null
+    onConfirm = null,
+    showButton = true
 }) {
     const modal = showModal("statusModal");
 
@@ -152,6 +153,13 @@ export function showStatusModal({
     // Устанавливаем текст
     text.textContent = message;
 
+    if (!showButton) {
+      button.style.display = "none";
+      return modal;
+    }
+
+    button.style.display = "";
+
     // Обработчик кнопки
     const handleClick = () => {
         hideModal("statusModal");
@@ -162,4 +170,6 @@ export function showStatusModal({
     };
 
     button.addEventListener("click", handleClick, { once: true });
+
+    return modal;
 }

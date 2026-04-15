@@ -54,7 +54,7 @@ async function updateAuth() {
         // Not logged in, redirect to login page
         window.location.href = "/login";        
     } else {
-        console.log("Current user:", user);
+        return user;
     }
 }
 updateAuth();
@@ -110,7 +110,6 @@ phoneInput.addEventListener("input", () => {
  */
 registerForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    console.log("Form submitted");
 
     const formData = new FormData(registerForm);
     const userData = {
@@ -197,7 +196,6 @@ let selectedFiles = [];
  */
 fileInput.addEventListener('change', () => {
     const file = fileInput.files[0];
-    console.log(file.type)
 
     if (!file) {
         showStatusModal({
@@ -321,6 +319,7 @@ async function uploadFiles() {
         showStatusModal({
             type: "success",
             message: "Выполняется загрузка и обработка файлов. Это может занять некоторое время...",
+            showButton: false
         });
 
         const response = await fetch("api/admin/excel-upload/", {
@@ -342,18 +341,14 @@ async function uploadFiles() {
                 type: 'error',
                 message: `Ошибка загрузки: ${errorData.detail}`
             })
-            console.log(errorData.detail);
         }
 
         const data = await response.json();
-
-        console.log("Пользователи добавлены:", data.insert_count);
 
         showStatusModal({
             type: "success",
             message: "Пользователи успешно добавлены!",
         });
-
         selectedFiles = [];
         previewList.innerHTML = "";
         fileInput.value = "";

@@ -210,24 +210,38 @@ async def progress_page(
             detail="Отсутствуют результаты для отображения прогресса экспертов.",
         )
 
+    result = await db.execute(
+        select(func.count(models.Tooth.id))
+    )
+    tooth_count = result.scalar()
+
     return templates.TemplateResponse(
         request,
         "progress.html",
-        {"title": "Прогресс экспертов", "users": users},
+        {"title": "Прогресс экспертов", 
+        "users": users, 
+        "tooth_count": tooth_count},
     )
 
 
 @app.get("/add-xray", include_in_schema=False)
-async def add_xray_page(request: Request):
+async def add_xray_page(
+    db: Annotated[AsyncSession, Depends(get_db)], 
+    request: Request
+):
     """
     Страница загрузки рентгеновских снимков.
     Рендерит шаблон add-xray.html, который позволяет администратору
     загружать новые снимки для последующей разметки.
     """
+    result = await db.execute(
+        select(func.count(models.Tooth.id))
+    )
+    tooth_count = result.scalar()
     return templates.TemplateResponse(
         request,
         "add-xray.html",
-        {"title": "Добавление снимков"},
+        {"title": "Добавление снимков", "tooth_count": tooth_count},
     )
 
 

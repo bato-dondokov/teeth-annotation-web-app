@@ -25,7 +25,7 @@ async function updateAuth() {
         // Not logged in, redirect to login page
         window.location.href = "/login";        
     } else {
-        console.log("Current user:", user);
+        return user;
     }
 }
 
@@ -43,7 +43,7 @@ if (!token) {
     window.location.href = '/login';
 }
 
-const downloadBtn = document.getElementById('downloadBtn');
+// const downloadBtn = document.getElementById('downloadBtn');
 /**
  * Обработчик кнопки скачивания резервной копии базы данных.
  *
@@ -58,36 +58,36 @@ const downloadBtn = document.getElementById('downloadBtn');
  * - при сетевой ошибке:
  *     - показывает модальное окно с сообщением о проблеме с соединением.
  */
-downloadBtn.addEventListener('click', async () => {
+// downloadBtn.addEventListener('click', async () => {
 
-    try {
-        const response = await fetch('/api/admin/dbdownload/', {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+//     try {
+//         const response = await fetch('/api/admin/dbdownload/', {
+//             method: 'POST',
+//             headers: {
+//                 Authorization: `Bearer ${token}`,
+//             },
+//         });
 
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `backup_${new Date().toISOString()}.db`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-        } else {
-            const error = await response.json();
-            showStatusModal({
-                type: "error",
-                message: getErrorMessage(error)
-            });
-        }
-    } catch (error) {
-        showStatusModal({
-            type: "error",
-            message: 'Ошибка сети. Пожалуйста, проверьте подключение и повторите попытку.'
-        });
-    }
-});
+//         if (response.ok) {
+//             const blob = await response.blob();
+//             const url = window.URL.createObjectURL(blob);
+//             const a = document.createElement('a');
+//             a.href = url;
+//             a.download = `backup_${new Date().toISOString()}.db`;
+//             document.body.appendChild(a);
+//             a.click();
+//             a.remove();
+//         } else {
+//             const error = await response.json();
+//             showStatusModal({
+//                 type: "error",
+//                 message: getErrorMessage(error)
+//             });
+//         }
+//     } catch (error) {
+//         showStatusModal({
+//             type: "error",
+//             message: 'Ошибка сети. Пожалуйста, проверьте подключение и повторите попытку.'
+//         });
+//     }
+// });

@@ -11,16 +11,19 @@
 from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
                                     create_async_engine)
 from sqlalchemy.orm import DeclarativeBase
+from config import DB_CONFIG
 
-# Строка подключения к SQLite с использованием асинхронного драйвера aiosqlite
-SQLALCHEMY_DATABASE_URL = "sqlite+aiosqlite:///./teeth_annotation.db"
+# Строка подключения к MySQL с использованием асинхронного драйвера aiomysql
+SQLALCHEMY_DATABASE_URL = (
+    "mysql+aiomysql://"
+    f"{DB_CONFIG['user']}:{DB_CONFIG['password']}"
+    f"@{DB_CONFIG['host']}:{DB_CONFIG['port']}"
+    f"/{DB_CONFIG['database']}"
+)
 
 
 # Асинхронный движок SQLAlchemy, общий для всего приложения.
-engine = create_async_engine(
-    SQLALCHEMY_DATABASE_URL, 
-    connect_args={"check_same_thread": False}
-)
+engine = create_async_engine(SQLALCHEMY_DATABASE_URL)
 
 
 # Фабрика асинхронных сессий

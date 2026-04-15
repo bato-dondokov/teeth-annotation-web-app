@@ -33,7 +33,7 @@ async function updateAuth() {
         // Not logged in, redirect to login page
         window.location.href = "/login";        
     } else {
-        console.log("Current user:", user);
+        return user;
     }
 }
 updateAuth();
@@ -184,6 +184,7 @@ async function uploadFiles() {
         showStatusModal({
             type: "success",
             message: "Выполняется загрузка и обработка файлов. Это может занять некоторое время...",
+            showButton: false
         });
 
 
@@ -211,8 +212,6 @@ async function uploadFiles() {
 
         const data = await response.json();
 
-        console.log("Файлы сохранены:", data.files);
-
         showStatusModal({
             type: "success",
             message: "Файлы успешно загружены!",
@@ -223,7 +222,7 @@ async function uploadFiles() {
         fileInput.value = "";
 
     } catch (error) {
-        console.error(error);
+
         showStatusModal({
             type: "error",
             message: `Ошибка при загрузке файлов: ${error}`,

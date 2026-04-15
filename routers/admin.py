@@ -23,7 +23,7 @@ from starlette.concurrency import run_in_threadpool
 
 import db.models as models
 from auth import CurrentUser
-from config import ANNOTATION_RANGE, DB_FILE, TEETH_DIR, XRAYS_DIR, settings
+from config import ANNOTATION_RANGE, TEETH_DIR, XRAYS_DIR, settings
 from db.database import get_db
 from dependencies import get_detector
 from excel_utils import read_excel_from_bytes, extract_first_phone
@@ -126,32 +126,32 @@ async def upload_images(db: Annotated[AsyncSession, Depends(get_db)],
     return {"files": saved_files}
 
 
-@router.post("/dbdownload/")
-async def download_db(current_user: CurrentUser):
-    """
-    Скачивание базы данных.
-    Принимает текущего пользователя, проверяет роль пользователя,
-    возвращает файл с базой данных.
-    """
-    if current_user.role != 'admin':
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Только администраторы могут скачивать базу данных",
-        )
+# @router.post("/dbdownload/")
+# async def download_db(current_user: CurrentUser):
+#     """
+#     Скачивание базы данных.
+#     Принимает текущего пользователя, проверяет роль пользователя,
+#     возвращает файл с базой данных.
+#     """
+#     if current_user.role != 'admin':
+#         raise HTTPException(
+#             status_code=status.HTTP_403_FORBIDDEN,
+#             detail="Только администраторы могут скачивать базу данных",
+#         )
     
-    try:
-        now = datetime.now().strftime("%Y-%m-%d")
-        filename = f"backup_{now}.db"
-        return FileResponse(
-            path=DB_FILE,
-            filename=filename,
-            media_type="application/x-sqlite3"
-        )
-    except Exception as err:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Ошибка при скачивании базы данных: {err}",
-        )
+#     try:
+#         now = datetime.now().strftime("%Y-%m-%d")
+#         filename = f"backup_{now}.db"
+#         return FileResponse(
+#             path=DB_FILE,
+#             filename=filename,
+#             media_type="application/x-sqlite3"
+#         )
+#     except Exception as err:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail=f"Ошибка при скачивании базы данных: {err}",
+#         )
 
 
 @router.post("/excel-upload/")

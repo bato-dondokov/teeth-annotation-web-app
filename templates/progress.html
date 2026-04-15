@@ -8,6 +8,7 @@
         <div class="header">
             <p class="title">Панель администратора</p>
             <p class="subtitle">Прогресс экспертов</p>
+            <p class="title">Всего снимков: {{ tooth_count }}</p>
         </div>
         <div class="separator"></div>
         <div class="progress-list">
@@ -19,7 +20,9 @@
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: {{ user.progress }}%"></div>
                         </div>
-                        <div class="progress-percentage">{{ user.progress }}% ({{ user.current_tooth - user.range_start}} из {{ user.range_end - user.range_start + 1 }})</div>
+                        <div class="progress-percentage">
+                            {{ user.progress }}% ({{ user.current_tooth - user.range_start if user.current_tooth > 0 else user.range_end}} из {{ user.range_end - user.range_start + 1 }})
+                        </div>
                     </div>
                 </div>
             {% endfor %}

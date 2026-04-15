@@ -43,7 +43,7 @@ class Role(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(25), unique=True)
-    name_ru: Mapped[str] = mapped_column(String(255))
+    name_ru: Mapped[str] = mapped_column(String(25))
     password_hash: Mapped[str] = mapped_column(String(200), nullable=False)
 
 
@@ -79,7 +79,7 @@ class Condition(Base):
     __tablename__ = "conditions"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(25))
+    name: Mapped[str] = mapped_column(String(255))
 
 
 class Pathology(Base):
@@ -89,7 +89,7 @@ class Pathology(Base):
     __tablename__ = "pathologies"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(25))
+    name: Mapped[str] = mapped_column(String(255))
 
 
 class Recommendation(Base):
@@ -99,7 +99,7 @@ class Recommendation(Base):
     __tablename__ = "recommendations"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(25))
+    name: Mapped[str] = mapped_column(String(255))
 
 
 class Term(Base):
@@ -109,7 +109,7 @@ class Term(Base):
     __tablename__ = "terms"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(25))
+    name: Mapped[str] = mapped_column(String(255))
 
 class Answer(Base):
     """Результат разметки.
