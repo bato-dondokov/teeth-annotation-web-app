@@ -18,6 +18,10 @@
 
 **Tech stack:** YOLO · FastAPI · MySQL · SQLAlchemy
 
+Explore the application's use cases in the following video:
+
+https://github.com/user-attachments/assets/2dbc82e7-7a8b-4e63-9395-5246179d6ad1
+
 ---
 
 ### Local Setup
