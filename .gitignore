@@ -47,3 +47,6 @@ teeth_annotation.db
 # --- Директории с изображениями ---
 static/xrays/
 static/teeth/
+
+# --- Отладочные файлы
+testmodel.py

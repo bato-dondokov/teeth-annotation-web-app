@@ -1,27 +1,44 @@
 {% extends "layout.html" %}
 {% block content %}
-    <a href="{{ url_for('admin_page') }}" class="goback">
-        <img src="../static/icons/Arrow left.svg" class="icon" alt="">
-        <p>Вернуться назад</p>
-    </a>
+    <div class="top-bar">
+        <a href="{{ url_for('admin_page') }}" class="goback">
+            <img src="../static/icons/Arrow left.svg" class="icon" alt="">
+            <p data-i18n="goback_button_text"></p>
+        </a>
+        <div class="lang-wrapper">
+            <button class="lang-btn" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+        </div>
+    </div>
     <div class="inner">
         <div class="header">
-            <p class="title">Панель администратора</p>
-            <p class="subtitle">Прогресс экспертов</p>
-            <p class="title">Всего снимков: {{ tooth_count }}</p>
+            <p class="title" data-i18n="progress_header_title"></p>
+            <p class="subtitle" data-i18n="progress_header_subtitle"></p>
+            <p class="title"
+               data-i18n="progress_users_count"
+               data-count="{{ users_count }}"></p>
         </div>
         <div class="separator"></div>
         <div class="progress-list">
             {% for user in users %}
                 <div class="progress-item">
                     <p class="progress-name">{{ user.name }}</p>
-                    <p class="progress-desc">{{ user.role }} (диапазон снимков: {{ user.range_start }}-{{ user.range_end }})</p>
+                    <p class="progress-desc"
+                       data-i18n="progress_desc"
+                       data-role-ru="{{ user.role_ru }}"
+                       data-role-en="{{ user.role_en }}"
+                       data-start="{{ user.range_start }}"
+                       data-end="{{ user.range_end }}">
+                    </p>
                     <div class="progress-wrapper">
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: {{ user.progress }}%"></div>
                         </div>
-                        <div class="progress-percentage">
-                            {{ user.progress }}% ({{ user.current_tooth - user.range_start if user.current_tooth > 0 else user.range_end}} из {{ user.range_end - user.range_start + 1 }})
+                        <div class="progress-percentage"
+                            data-i18n="progress_percentage"
+                            data-percent="{{ user.progress }}"
+                            data-current="{{ user.current_tooth - user.range_start if user.current_tooth > 0 else user.range_end }}"
+                            data-total="{{ user.range_end - user.range_start + 1 }}">
                         </div>
                     </div>
                 </div>

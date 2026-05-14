@@ -1,4 +1,9 @@
 """
+Utility functions for handling Excel files.
+Contains a utility to read an Excel file from byte content 
+(e.g., uploaded via HTTP) using pandas.
+
+---
 Вспомогательные функции для работы с Excel‑файлами.
 Содержит утилиту чтения Excel‑файла из байтового содержимого
 (например, загруженного через HTTP) с помощью pandas.
@@ -12,6 +17,12 @@ def read_excel_from_bytes(contents: bytes):
 
 def extract_first_phone(phone_value: str) -> str | None:
     """
+    Phone number normalization:
+    - 8XXXXXXXXXX  -> 7XXXXXXXXXX
+    - +7XXXXXXXXXX -> 7XXXXXXXXXX
+    - Result: "+7 (XXX) XXX-XX-XX" or None if no number is found.
+
+    ---
     Нормализация телефона:
     - 8XXXXXXXXXX  -> 7XXXXXXXXXX
     - +7XXXXXXXXXX -> 7XXXXXXXXXX
@@ -20,7 +31,6 @@ def extract_first_phone(phone_value: str) -> str | None:
     if not isinstance(phone_value, str):
         return None
 
-    # Убираем всё кроме цифр
     digits = re.sub(r"\D", "", phone_value)
 
     candidates = []
@@ -29,7 +39,7 @@ def extract_first_phone(phone_value: str) -> str | None:
     for m in re.findall(r"8\d{10}", digits):
         candidates.append("7" + m[1:])
 
-    # 7XXXXXXXXXX (включая бывшие +7)
+    # 7XXXXXXXXXX
     candidates.extend(re.findall(r"7\d{10}", digits))
 
     if not candidates:

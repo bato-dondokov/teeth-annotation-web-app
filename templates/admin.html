@@ -1,31 +1,37 @@
 {% extends "layout.html" %}
 {% block content %}
-    <dev class="goback" id="logoutBtn">
-        <img src="../static/icons/Arrow left.svg" class="icon" alt="">
-        <p>Выйти</p>
-    </dev>
+    <div class="top-bar">
+        <dev class="goback" id="logoutBtn">
+            <img src="../static/icons/Arrow left.svg" class="icon" alt="">
+            <p data-i18n="logout_button_text"></p>
+        </dev>
+        <div class="lang-wrapper">
+            <button class="lang-btn" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+        </div>
+    </div>
     <div class="inner">
         <div class="header">
-            <p class="title">Панель администратора</p>
-            <p class="subtitle">Выберите нужную команду</p>
+            <p class="title" data-i18n="admin_header_title"></p>
+            <p class="subtitle" data-i18n="admin_header_subtitle"></p>
         </div>
         <div class="menu">
             <div class="separator"></div>
 
             <a href="{{ url_for("progress_page") }}" class="menu-item">
-                <div class="menu-text">Посмотреть прогресс экспертов</div>
+                <div class="menu-text" data-i18n="admin_menu_item_progress"></div>
             </a>
             <div class="separator"></div>
             <a href="{{ url_for("add_xray_page") }}" class="menu-item">
-                <div class="menu-text">Добавить снимок</div>
+                <div class="menu-text" data-i18n="admin_menu_item_add_xray"></div>
             </a>
             <div class="separator"></div>
             <a href="{{ url_for("register_page") }}" class="menu-item">
-                <div class="menu-text">Добавить номер для доступа</div>
+                <div class="menu-text" data-i18n="admin_menu_item_add_user"></div>
             </a>
             <div class="separator"></div>
             <!-- <div class="menu-item" id="downloadBtn">
-                <div class="menu-text">Выгрузить БД</div>
+                <div class="menu-text" data-i18n="admin_menu_item_download"></div>
             </div>
             <div class="separator"></div> -->
         </div>

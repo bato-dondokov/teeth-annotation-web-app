@@ -1,4 +1,12 @@
 """
+Router for tooth annotation operations.
+
+Contains handlers for:
+- Retrieving a tooth image.
+- Retrieving a cropped tooth image.
+- Saving a tooth annotation response.
+
+---
 Роутер для работы с разметкой зубов.
 
 Содержит обработчики для:
@@ -20,7 +28,6 @@ from auth import CurrentUser
 from db.database import get_db
 from schemas import AnnotationRequest
 
-# Роутер для работы с разметкой зубов.
 router = APIRouter()
 
 @router.get("/tooth/{tooth_id}")
@@ -30,6 +37,12 @@ async def get_tooth(
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
+    Retrieve a tooth image.
+    Accepts the current user, tooth ID, and database session; verifies 
+    the user's role, fetches the tooth image from the database, 
+    and returns the image file.
+
+    ---
     Получение изображения зуба.
     Принимает текущего пользователя, id зуба, базу данных,
     проверяет роль пользователя,
@@ -37,10 +50,10 @@ async def get_tooth(
     возвращает изображение зуба.
     """
 
-    if current_user.role not in ['resident', 'teacher']:
+    if current_user.role not in ['Resident', 'Teacher']:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="У вас нет разрешения на разметку снимков",
+            detail="You do not have permission to annotate scans.",
         )
     result = await db.execute(
         select(models.Tooth).where(models.Tooth.id == tooth_id)
@@ -50,7 +63,7 @@ async def get_tooth(
     if not tooth or not os.path.exists(tooth.file_name):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Отсутствуют снимки для разметки. Обратитесь к преподавателю.",
+            detail="No scans available for annotation. Please contact your teacher.",
         ) 
     filename = tooth.file_name
     return FileResponse(
@@ -66,16 +79,22 @@ async def get_cropped_tooth(
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
+    Retrieve a cropped tooth image.
+    Accepts the current user, tooth ID, and database session; verifies 
+    the user's role, fetches the cropped tooth image from the database, 
+    and returns the cropped image file.
+
+    ---
     Получение изображения зуба с урезанным изображением.
     Принимает текущего пользователя, id зуба, базу данных,
     проверяет роль пользователя,
     получает изображение зуба с урезанным изображением из базы данных,
     возвращает изображение зуба с урезанным изображением.
     """
-    if current_user.role not in ['resident', 'teacher']:
+    if current_user.role not in ['Resident', 'Teacher']:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="У вас нет разрешения на получение снимков",
+            detail="You do not have permission to annotate scans.",
         )
     result = await db.execute(
         select(models.Tooth).where(models.Tooth.id == tooth_id)
@@ -84,7 +103,7 @@ async def get_cropped_tooth(
     if not tooth or not os.path.exists(tooth.cropped_file_name):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Отсутствуют снимки для разметки. Обратитесь к преподавателю.",
+            detail="No scans available for annotation. Please contact your teacher.",
         )
     filename = tooth.cropped_file_name
     return FileResponse(
@@ -100,16 +119,22 @@ async def save_answer(
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
+    Save tooth annotation response.
+    Accepts the current user, an annotation request, and the database session; 
+    verifies the user's role, creates a new annotation record in the database, 
+    and returns the created response.
+
+    ---
     Сохранение ответа на разметку зуба.
     Принимает текущего пользователя, запрос на разметку зуба, базу данных,
     проверяет роль пользователя,
     создает новый ответ на разметку зуба в базе данных,
     возвращает новый ответ на разметку зуба.
     """
-    if current_user.role not in ['resident', 'teacher']:
+    if current_user.role not in ['Resident', 'Teacher']:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="У вас нет разрешения на разметку данных",
+            detail="You do not have permission to annotate scans.",
         )
     
     new_answer = models.Answer(
@@ -137,4 +162,4 @@ async def save_answer(
         user.current_tooth = 0
     await db.commit()
     await db.refresh(new_answer)
-    return {"message": "Ответ на разметку зуба успешно сохранен"}
+    return {"message": "Tooth annotation response successfully saved."}

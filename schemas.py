@@ -1,4 +1,11 @@
 """
+Pydantic schemas (DTO) for the API.
+Defines data structures for:
+- Roles and users (creation, public, and private views).
+- JWT tokens.
+- Annotation save requests.
+
+---
 Pydantic‑схемы (DTO) для API.
 Описывают структуры данных:
 - ролей и пользователей (создание, публичное и приватное представления);
@@ -45,3 +52,8 @@ class AnnotationRequest(BaseModel):
     pathology: int
     recommendation: int
     term: int
+
+class LoginForm(BaseModel):
+    phone_number: str
+    role: str
+    access_code: str

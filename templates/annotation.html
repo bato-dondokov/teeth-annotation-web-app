@@ -1,13 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
-    <dev class="goback" id="logoutBtn">
-        <img src="../static/icons/Arrow left.svg" class="icon" alt="">
-        <p>Выйти</p>
-    </dev>
+    <div class="top-bar">
+        <dev class="goback" id="logoutBtn">
+            <img src="../static/icons/Arrow left.svg" class="icon" alt="">
+            <p data-i18n="logout_button_text"></p>
+        </dev>
+        <div class="lang-wrapper">
+            <button class="lang-btn" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+        </div>
+    </div>
     <div class="inner">
         <div class="header">
-            <p class="title">Разметка зубов</p>
-            <p class="subtitle">Выберите нужные варианты</p>
+            <p class="title" data-i18n="annotation_header_title"></p>
+            <p class="subtitle" data-i18n="annotation_header_subtitle"></p>
         </div>
         <div class="separator"></div>
         <div class="image-block">
@@ -20,48 +26,56 @@
             <img src="" alt="Полноэкранная картинка" id="lightbox-img">
         </div>
         <div class="annotation-text">
-            <p class="subtitle" id="annotation-desc">Разметка зубов</p>
-            <p class="title" id="annotation-instructions">Выберите нужные варианты</p>
+            <p class="subtitle" id="annotation-desc"></p>
+            <p class="title" id="annotation-instructions"></p>
         </div>
         <div class="separator"></div>
         <form class="form" id="annotationForm">
             <div class="input-field">
-                <label for="condition">Исходное состояние</label>
+                <label for="condition" data-i18n="annotation_condition_label"></label>
                 <select id="condition" name="condition">
-                    <option value="">Выберите исходное состояние</option>
+                    <option value="" data-i18n="annotation_condition_default"></option>
                     {% for condition in conditions %}
-                        <option value="{{ condition.id }}">{{ condition.name }}</option>
+                        <option value="{{ condition.id }}"
+                                data-ru="{{ condition.name_ru }}"
+                                data-en="{{ condition.name }}"></option>
                     {% endfor %}
                 </select>
             </div>
             <div class="input-field">
-                <label for="pathology">Патология</label>
+                <label for="pathology" data-i18n="annotation_pathology_label"></label>
                 <select id="pathology" name="pathology">
-                    <option value="">Выберите патологию</option>
+                    <option value="" data-i18n="annotation_pathology_default"></option>
                     {% for pathology in pathologies %}
-                        <option value="{{ pathology.id }}">{{ pathology.name }}</option>
+                        <option value="{{ pathology.id }}"
+                                data-ru="{{ pathology.name_ru }}"
+                                data-en="{{ pathology.name }}"></option>
                     {% endfor %}
                 </select>
             </div>
             <div class="input-field">
-                <label for="recommendation">Рекомендация</label>
+                <label for="recommendation" data-i18n="annotation_recommendation_label"></label>
                 <select id="recommendation" name="recommendation">
-                    <option value="">Выберите рекомендацию</option>
+                    <option value="" data-i18n="annotation_recommendation_default"></option>
                     {% for recommendation in recommendations %}
-                        <option value="{{ recommendation.id }}">{{ recommendation.name }}</option>
+                        <option value="{{ recommendation.id }}"
+                                data-ru="{{ recommendation.name_ru }}"
+                                data-en="{{ recommendation.name }}"></option>
                     {% endfor %}
                 </select>
             </div>
             <div class="input-field">
-                <label for="term">Сроки обращения</label>
+                <label for="term" data-i18n="annotation_term_label"></label>
                 <select id="term" name="term">
-                    <option value="">Выберите сроки обращения</option>
+                    <option value="" data-i18n="annotation_term_default"></option>
                     {% for term in terms %}
-                        <option value="{{ term.id }}">{{ term.name }}</option>
+                        <option value="{{ term.id }}"
+                                data-ru="{{ term.name_ru }}"
+                                data-en="{{ term.name }}"></option>
                     {% endfor %}
                 </select>
             </div>
-            <button class="submit-button" disabled>Подтвердить</button>
+            <button class="submit-button" disabled data-i18n="annotation_submit_button"></button>
         </form>
     </div>
     <script type="module" src="/static/js/annotation.js"></script>

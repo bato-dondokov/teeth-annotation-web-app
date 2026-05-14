@@ -1,4 +1,15 @@
 """
+Asynchronous database configuration module.
+
+Provides:
+- `SQLALCHEMY_DATABASE_URL`: Database connection string.
+- `engine`: Asynchronous SQLAlchemy engine instance.
+- `AsyncSessionLocal`: Factory for creating asynchronous sessions.
+- `Base`: Declarative base class for ORM models.
+- `get_db`: Dependency provider for obtaining async sessions in request handlers.
+
+---
+
 Модуль конфигурации асинхронного подключения к базе данных.
 
 Создаёт:
@@ -11,22 +22,26 @@
 from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
                                     create_async_engine)
 from sqlalchemy.orm import DeclarativeBase
-from config import DB_CONFIG
+from config import settings
 
-# Строка подключения к MySQL с использованием асинхронного драйвера aiomysql
+
+# MySQL connection string using the aiomysql async driver.
+# Строка подключения к MySQL с использованием асинхронного драйвера aiomysql.
 SQLALCHEMY_DATABASE_URL = (
     "mysql+aiomysql://"
-    f"{DB_CONFIG['user']}:{DB_CONFIG['password']}"
-    f"@{DB_CONFIG['host']}:{DB_CONFIG['port']}"
-    f"/{DB_CONFIG['database']}"
+    f"{settings.db_user}:{settings.db_password}"
+    f"@{settings.db_host}:{settings.db_port}"
+    f"/{settings.db_name}"
 )
 
 
+# Application-wide asynchronous SQLAlchemy engine.
 # Асинхронный движок SQLAlchemy, общий для всего приложения.
 engine = create_async_engine(SQLALCHEMY_DATABASE_URL)
 
 
-# Фабрика асинхронных сессий
+# Asynchronous session factory for database operations.
+# Фабрика асинхронных сессий для операций с базой данных.
 AsyncSessionLocal = async_sessionmaker(
     engine,
     class_=AsyncSession,
@@ -35,11 +50,21 @@ AsyncSessionLocal = async_sessionmaker(
 
 
 class Base(DeclarativeBase):
-    """Базовый класс для всех ORM-моделей."""
+    """
+    Base class for all ORM models.
+    
+    ---
+    Базовый класс для всех ORM-моделей.
+    """
     pass
 
 
 async def get_db():
-    """Зависимость для получения асинхронной сессии в обработчиках."""
+    """
+    Async session dependency for request handlers.
+
+    ---
+    Зависимость для получения асинхронной сессии в обработчиках.
+    """
     async with AsyncSessionLocal() as session:
         yield session

@@ -1,30 +1,43 @@
 {% extends "layout.html" %}
 {% block content %}
+    <div class="top-bar">
+        <!-- <p class="main_title" data-i18n="login_header_title"></p> -->
+        <dev class="login_header">
+            <img src="../static/icons/tooth-icon.png" width="20" height="20" class="icon" alt="">
+            <p data-i18n="login_header_title"></p>
+        </dev>
+        <div class="lang-wrapper">
+            <button class="lang-btn" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+        </div>
+    </div>
     <div class="inner">
         <div class="header">
-            <p class="title">Разметка зубов</p>
-            <p class="subtitle">Войдите, чтобы начать разметку</p>
+            <!-- <p class="title" data-i18n="login_header_title"></p> -->
+            <p class="subtitle" data-i18n="login_header_subtitle"></p>
         </div>
         <form class="form" id="loginForm">
             <div class="input-field">
-                <label for="phonenumber">Номер телефона</label>
-                <input type="text" id="phonenumber" name="username" placeholder="+7 (___) ___-__-__" maxlength="18">
+                <label for="phonenumber" data-i18n="login_form_phonenumber"></label>
+                <input type="text" id="phonenumber" name="username" data-i18n-placeholder="login_form_phonenumber_placeholder" maxlength="18">
             </div>
             <div class="input-field">
-                <label for="status">Статус</label>
+                <label for="status" data-i18n="login_form_status"></label>
                 <select id="roleselect" name="roleselect">
-                    <option value="">Выберите свой статус</option>
+                    <option value="" data-i18n="login_form_status_default"></option>
                     {% for role in roles %}
-                        <option value="{{ role.name }}">{{ role.name_ru }}</option>
+                        <option value="{{ role.name }}"
+                                data-ru="{{ role.name_ru }}"
+                                data-en="{{ role.name }}"></option>
                     {% endfor %}
                 </select>
             </div>
             <div class="input-field">
-                <label for="accesscode">Код доступа</label>
-                <input type="text" id="accesscode" name="password" placeholder="Введите код доступа">
+                <label for="accesscode" data-i18n="login_form_accesscode"></label>
+                <input type="password" id="accesscode" name="password" data-i18n-placeholder="login_form_accesscode_placeholder">
             </div>
-            <p class="info">Если у вас нет кода доступа, обратитесь к преподавателю</p>
-            <button type="submit" class="submit-button" disabled>Войти</button>
+            <p class="info" data-i18n="login_form_info"></p>
+            <button type="submit" class="submit-button" disabled data-i18n="login_form_submit"></button>
         </form>
     </div>
     <script type="module" src="/static/js/login.js"></script>

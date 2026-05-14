@@ -1,4 +1,12 @@
 """
+App router initialization module.
+
+Contains router definitions:
+- users.router: Router for user-related operations.
+- admin.router: Router for administrator operations.
+- annotation.router: Router for tooth annotation tasks.
+
+---
 Модуль инициализации роутеров приложения.
 
 Содержит определения роутеров:

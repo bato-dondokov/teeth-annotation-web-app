@@ -1,5 +1,17 @@
 import { getCurrentUser, logout, getToken,  } from '/static/js/auth.js';
 import { showStatusModal, getErrorMessage } from '/static/js/utils.js';
+import { initLang, t } from './i18n.js';
+initLang();
+
+/**
+ * Checks the user's authorization status.
+ *
+ * Asynchronously retrieves the current user via getCurrentUser().
+ * If the user is not authorized, redirects to the /login page.
+ * If authorized, logs user data to the console (for debugging).
+ *
+ * Called once upon page load.
+ */
 
 /**
  * Проверяет состояние авторизации пользователя.
@@ -21,6 +33,7 @@ async function updateAuth() {
     }
 }
 
+// Administrator logout button and its click handler.
 // Кнопка выхода из аккаунта администратора и обработчик клика.
 const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
@@ -28,6 +41,28 @@ if (logoutBtn) {
 }
 const user = await updateAuth();
 
+
+/**
+ * Stops the annotation flow and displays a completion or error message.
+ *
+ * Behavior:
+ * - hides all top-level elements of the page except for the status modal;
+ * - if id is 0, displays a success modal indicating that the annotation is finished;
+ * - if id is non-zero, displays an error modal indicating no images were found;
+ * - redirects the user to /login upon clicking the confirmation button in the modal;
+ * - throws an Error to halt further execution of the script.
+ */
+
+/**
+ * Останавливает процесс аннотации и выводит сообщение о завершении или ошибке.
+ *
+ * Поведение:
+ * - скрывает все прямые дочерние элементы body, кроме модального окна статуса;
+ * - если id равен 0 — показывает модальное окно об успешном завершении разметки;
+ * - если id не равен 0 — показывает модальное окно с ошибкой (отсутствие снимков);
+ * - при подтверждении в модальном окне перенаправляет пользователя на /login;
+ * - выбрасывает исключение Error для принудительной остановки выполнения скрипта.
+ */
 function showCompletionAndStop(id) {
     Array.from(document.body.children).forEach((el) => {
         if (el.id !== "statusModal") {
@@ -37,7 +72,7 @@ function showCompletionAndStop(id) {
     if (id == 0) {
         showStatusModal({
             type: "success",
-            message: "Вы успешно завершили разметку всех назначенных зубов. Спасибо за ваше участие!",
+            message: t("annotation_complete_message"),
             onConfirm: () => {
                 window.location.href = "/login";
             }
@@ -45,7 +80,7 @@ function showCompletionAndStop(id) {
     } else {
         showStatusModal({
             type: "error",
-            message: "Отсутствуют снимки для разметки. Обратитесь к преподавателю.",
+            message: t("annotation_no_images_message"),
             onConfirm: () => {
                 window.location.href = '/login';
             }
@@ -55,13 +90,21 @@ function showCompletionAndStop(id) {
     throw new Error("Annotation flow stopped: there is no more teeth to annotate");
 }
 
-// Проверка наличия JWT‑токена при загрузке страницы.
-// При отсутствии токена пользователь перенаправляется на /login.
+/**
+ * Checks for the presence of a JWT token on page load.
+ * Redirects the user to /login if the token is missing.
+ */
+
+/**
+ * Проверка наличия JWT-токена при загрузке страницы.
+ * При отсутствии токена пользователь перенаправляется на /login.
+ */
 const token = getToken();
 if (!token) {
     window.location.href = '/login';
 }
 
+// UI elements for displaying images and markup text.
 // Элементы интерфейса для отображения изображений и текста разметки.
 const thumbnail = document.getElementById('thumbnail');
 const thumbnail_cropped = document.getElementById('thumbnail-cropped');
@@ -70,9 +113,31 @@ const lightboxImg = document.getElementById('lightbox-img');
 const annotationDesc = document.getElementById('annotation-desc');
 const annotationInstructions = document.getElementById('annotation-instructions');
 // Описание текущего зуба и инструкции для пользователя.
-annotationDesc.textContent = "Снимок зуба №" + user.current_tooth + " из диапазона [" + user.range_start + ", " + user.range_end + "]";
-annotationInstructions.textContent = "Пожалуйста, внимательно изучите его и выберите наиболее подходящие варианты из выпадающих списков. Ваши ответы помогут в обучении и улучшении диагностики. Спасибо за ваше участие!";
+annotationDesc.textContent = t("annotation_tooth_desc", {
+    number: user.current_tooth,
+    start: user.range_start,
+    end: user.range_end
+});
+annotationInstructions.textContent = t("annotation_instructions");
 
+
+/**
+ * Loads images for a specific tooth by its ID.
+ *
+ * Performs two requests:
+ * 1) GET /api/annotation/tooth/{id} — retrieves the original tooth image;
+ * 2) POST /api/annotation/tooth_cropped/{id} — retrieves the cropped fragment.
+ *
+ * On success:
+ * - converts the Blob into a temporary URL and sets it as the src for the corresponding img elements.
+ *
+ * On server error response:
+ * - displays a modal window with the error message received from the backend.
+ *
+ * On network error or missing images:
+ * - displays a modal window stating that the annotation is complete
+ * and redirects the user to /login upon confirmation.
+ */
 
 /**
  * Загружает изображения для указанного зуба по его идентификатору.
@@ -89,7 +154,7 @@ annotationInstructions.textContent = "Пожалуйста, внимательн
  *
  * При сетевой ошибке или отсутствии снимков:
  * - показывает модальное окно с сообщением о завершении разметки
- *   и перенаправляет пользователя на /login по подтверждению.
+ * и перенаправляет пользователя на /login по подтверждению.
  */
 async function loadImageById(id) {
     if (id == 0) {
@@ -134,9 +199,17 @@ async function loadImageById(id) {
     }
 }
 
-// Лайтбокс для увеличенного просмотра снимка.
-// Клик по миниатюре открывает лайтбокс с соответствующим изображением,
-// клик по фону лайтбокса закрывает его.
+/**
+ * Lightbox for enlarged image viewing.
+ * * Clicking on a thumbnail opens the lightbox with the corresponding image;
+ * clicking on the lightbox background closes it.
+ */
+
+/**
+ * Лайтбокс для увеличенного просмотра снимка.
+ * * Клик по миниатюре открывает лайтбокс с соответствующим изображением,
+ * клик по фону лайтбокса закрывает его.
+ */
 loadImageById(user.current_tooth);
 thumbnail.addEventListener('click', () => {
     lightboxImg.src = thumbnail.src;
@@ -160,6 +233,14 @@ const recommendationSelect = document.getElementById('recommendation');
 const termSelect = document.getElementById('term');
 const submitBtn = annotationForm.querySelector('.submit-button');
 
+
+/**
+ * Checks if all required fields in the annotation form are filled.
+ *
+ * If a non-empty option is selected in every <select> element, enables the submit button.
+ * Otherwise, disables the button to prevent submitting an incomplete annotation.
+ */
+
 /**
  * Проверяет, заполнены ли все обязательные поля формы аннотации.
  *
@@ -177,15 +258,40 @@ function checkForm() {
 }
 
 
-// При изменении любого из выпадающих списков перепроверяем,
-// можно ли активировать кнопку отправки.
+/**
+ * Whenever any dropdown list changes, re-check if the submit 
+ * button can be activated.
+ */
+
+/**
+ * При изменении любого из выпадающих списков перепроверяем,
+ * можно ли активировать кнопку отправки.
+ */
 conditionSelect.addEventListener('change', checkForm);
 pathologySelect.addEventListener('change', checkForm);
 recommendationSelect.addEventListener('change', checkForm);
 termSelect.addEventListener('change', checkForm);
 
-// При загрузке страницы кнопка выключена
 checkForm();
+
+/**
+ * Tooth annotation form submission handler.
+ *
+ * Behavior:
+ * - prevents the default form submission (e.preventDefault());
+ * - reads selected values from dropdowns and converts them to numbers;
+ * - sends a POST request to /api/annotation/save with a JSON body:
+ * { condition, pathology, recommendation, term };
+ * - on success:
+ * - displays a modal window indicating the annotation was saved successfully,
+ * - upon confirmation, redirects the user to the /annotation page
+ * to proceed to the next tooth;
+ * - on server error:
+ * - displays a modal window with an error message 
+ * generated by the getErrorMessage(error) function;
+ * - on exception (network error, etc.):
+ * - displays a modal window with the error text.
+ */
 
 /**
  * Обработчик отправки формы аннотации зуба.
@@ -193,22 +299,20 @@ checkForm();
  * Поведение:
  * - предотвращает стандартную отправку формы (e.preventDefault());
  * - считывает выбранные значения из select’ов и приводит их к числам;
- * - отправляет POST‑запрос на /api/annotation/save с JSON‑телом:
- *   { condition, pathology, recommendation, term };
+ * - отправляет POST-запрос на /api/annotation/save с JSON-телом:
+ * { condition, pathology, recommendation, term };
  * - при успешном ответе:
- *     - показывает модальное окно об успешном сохранении аннотации,
- *     - по подтверждению перенаправляет пользователя на страницу /annotation
- *       для перехода к следующему зубу;
+ * - показывает модальное окно об успешном сохранении аннотации,
+ * - по подтверждению перенаправляет пользователя на страницу /annotation
+ * для перехода к следующему зубу;
  * - при ошибке ответа сервера:
- *     - показывает модальное окно с сообщением об ошибке,
- *       сформированным функцией getErrorMessage(error);
+ * - показывает модальное окно с сообщением об ошибке,
+ * сформированным функцией getErrorMessage(error);
  * - при исключении (сетевая ошибка и т.п.):
- *     - показывает модальное окно с текстом ошибки.
+ * - показывает модальное окно с текстом ошибки.
  */
 annotationForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    const formData = new FormData(annotationForm);
 
     try {
         const response = await fetch('/api/annotation/save', {
@@ -228,7 +332,7 @@ annotationForm.addEventListener('submit', async (e) => {
         if (response.ok) {
             showStatusModal({
                 type: "success",
-                message: "Аннотация успешно сохранена!",
+                message: t("annotation_saved_success"),
                 onConfirm: () => {
                             window.location.href = "/annotation";
                         }
@@ -237,13 +341,13 @@ annotationForm.addEventListener('submit', async (e) => {
             const error = await response.json();
             showStatusModal({
                 type: "error",
-                message: `Ошибка сохранения аннотации: ${getErrorMessage(error)}`
+                message: `${t("annotation_save_error")}: ${getErrorMessage(error)}`
             });
         }
     } catch (err) {
         showStatusModal({
             type: "error",
-            message: `Ошибка сохранения аннотации: ${err}`
+            message: `${t("annotation_save_error")}: ${err}`
         });
     }
 });

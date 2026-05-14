@@ -1,39 +1,50 @@
 {% extends "layout.html" %}
 {% block content %}
-    <a href="{{ url_for('admin_page') }}" class="goback">
-        <img src="../static/icons/Arrow left.svg" class="icon" alt="">
-        <p>Вернуться назад</p>
-    </a>
+    <div class="top-bar">
+        <a href="{{ url_for('admin_page') }}" class="goback">
+            <img src="../static/icons/Arrow left.svg" class="icon" alt="">
+            <p data-i18n="goback_button_text"></p>
+        </a>
+        <div class="lang-wrapper">
+            <button class="lang-btn" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+        </div>
+    </div>
     <div class="inner">
         <div class="header">
-            <p class="title">Панель администратора</p>
-            <p class="subtitle">Добавление пользователя</p>
+            <p class="title" data-i18n="admin_header_title"></p>
+            <p class="subtitle" data-i18n="register_header_subtitle"></p>
+            <p class="title"
+               data-i18n="progress_users_count"
+               data-count="{{ users_count }}"></p>
         </div>
         <div class="separator"></div>
         <div class="tabs">
-            <button class="tab active" data-tab="form1">Через форму</button>
-            <button class="tab" data-tab="form2">Через таблицу</button>
+            <button class="tab active" data-tab="form1" data-i18n="register_tab_form"></button>
+            <button class="tab" data-tab="form2" data-i18n="register_tab_table"></button>
         </div>
         <div class="form-block active" id="form1">
             <form class="form" id="registerForm">
                 <div class="input-field">
-                    <label for="fullname">ФИО</label>
-                    <input type="text" id="fullname" name="fullname" placeholder="Введите ФИО пользователя">
+                    <label for="fullname" data-i18n="register_form_fullname"></label>
+                    <input type="text" id="fullname" name="fullname" data-i18n-placeholder="register_form_fullname_placeholder">
                 </div>
                 <div class="input-field">
-                    <label for="phonenumber">Номер телефона</label>
-                    <input type="text" id="phonenumber" name="phonenumber" placeholder="+7 (___) ___-__-__" maxlength="18">
+                    <label for="phonenumber" data-i18n="register_form_phonenumber"></label>
+                    <input type="text" id="phonenumber" name="phonenumber" data-i18n-placeholder="register_form_phonenumber_placeholder" maxlength="18">
                 </div>
                 <div class="input-field">
-                    <label for="roleselect">Статус</label>
+                    <label for="roleselect" data-i18n="register_form_status"></label>
                     <select id="roleselect" name="roleselect">
-                        <option value="">Выберите свой статус</option>
+                        <option value="" data-i18n="register_form_status_default"></option>
                         {% for role in roles %}
-                            <option value="{{ role.name }}">{{ role.name_ru }}</option>
+                            <option value="{{ role.name }}"
+                                    data-ru="{{ role.name_ru }}"
+                                    data-en="{{ role.name }}"></option>
                         {% endfor %}
                     </select>
                 </div>
-                <button type="submit" class="submit-button" disabled>Добавить</button>
+                <button type="submit" class="submit-button" disabled data-i18n="register_form_submit"></button>
             </form>
         </div>
         <div class="form-block" id="form2">
@@ -43,7 +54,7 @@
                     <path d="M4 20H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
 
-                <p>Выберите табличный файл в Excel формате (.xlsx)</p>
+                <p data-i18n="register_excel_info"></p>
 
                 <input type="file" id="fileInput" hidden accept=".xlsx">
             </div>
@@ -51,7 +62,7 @@
             <div class="preview-list" id="previewList">
                 <!-- Здесь будут отображаться превью загруженных снимков -->
             </div>
-            <button class="submit-button" id="uploadBtn">Добавить</button>
+            <button class="submit-button" id="uploadBtn" data-i18n="register_excel_submit"></button>
         </div>
     </div>
     <script type="module" src="/static/js/register.js"></script>

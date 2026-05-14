@@ -1,4 +1,15 @@
 """
+ORM models for the tooth annotation application database.
+
+Contains table definitions:
+- User / Role: System users and their roles.
+- Xray / Tooth: X-rays and individual tooth images.
+- Condition / Pathology / Recommendation / Term: Reference tables for states, 
+  pathologies, recommendations, and follow-up terms.
+- Answer: Annotation results linking user, tooth, condition, pathology, 
+  recommendation, and term.
+
+---
 ORM-модели для работы с базой данных приложения разметки зубов.
 
 Содержит определения таблиц:
@@ -19,9 +30,12 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 
 class User(Base):
-    """Пользователь системы разметки.
-    Хранит имя, номер телефона, роль (ссылку на таблицу roles),
-    текущий прогресс разметки и диапазон зубов, назначенный пользователю.
+    """
+    Annotation system user. Stores name, phone, role, progress, and assigned tooth range.
+    
+    ---
+    Пользователь системы разметки. Хранит имя, номер телефона, роль, 
+    текущий прогресс разметки и назначенный диапазон зубов.
     """
     __tablename__ = "users"
 
@@ -36,8 +50,13 @@ class User(Base):
 
 
 class Role(Base):
-    """Роль пользователя в системе.
-    Содержит  название роли, а также хеш пароля для входа под этой ролью.
+    """
+    System user role.
+    Contains the role name and the password hash for authentication.
+
+    ---
+    Роль пользователя в системе.
+    Содержит название роли, а также хеш пароля для входа под этой ролью.
     """
     __tablename__ = "roles"
 
@@ -48,7 +67,12 @@ class Role(Base):
 
 
 class Xray(Base):
-    """Рентгеновский снимок.
+    """
+    X-ray scan.
+    Represents the source scan file used to extract individual tooth images.
+
+    ---
+    Рентгеновский снимок.
     Представляет исходный файл снимка, на основе которого
     вырезаются отдельные изображения зубов.
     """
@@ -58,7 +82,13 @@ class Xray(Base):
 
 
 class Tooth(Base):
-    """Изображение зуба.
+    """
+    Tooth image.
+    Stores tooth complexity, a reference to the source X-ray, 
+    and the filename of the tooth image.
+
+    ---
+    Изображение зуба.
     Хранит информацию о сложности зуба, ссылку на исходный снимок
     и имя файла с изображением зуба.
     """
@@ -70,49 +100,81 @@ class Tooth(Base):
     xray_id: Mapped[int] = mapped_column(ForeignKey('xrays.id'))
     file_name: Mapped[str] = mapped_column(String(255))    
     cropped_file_name: Mapped[str] = mapped_column(String(255))    
+    points: Mapped[str] = mapped_column(String(255))  
 
 
 class Condition(Base):
-    """Состояние зуба.
+    """
+    Tooth condition.
+    Used to store possible tooth state options.
+
+    ---
+    Состояние зуба.
     Используется для хранения возможных вариантов состояния зуба.
     """
     __tablename__ = "conditions"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(255))
+    name_ru: Mapped[str] = mapped_column(String(255))
 
 
 class Pathology(Base):
-    """Патология зуба.
+    """
+    Tooth pathology.
+    Used to store possible tooth pathology options.
+
+    ---
+    Патология зуба.
     Используется для хранения возможных вариантов патологии зуба.
     """
     __tablename__ = "pathologies"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(255))
+    name_ru: Mapped[str] = mapped_column(String(255))
 
 
 class Recommendation(Base):
-    """Рекомендация к лечению.
+    """
+    Treatment recommendation.
+    Used to store possible treatment recommendation options.
+
+    ---
+    Рекомендация к лечению.
     Используется для хранения возможных вариантов рекомендаций к лечению зуба.
     """
     __tablename__ = "recommendations"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(255))
+    name_ru: Mapped[str] = mapped_column(String(255))
 
 
 class Term(Base):
-    """Срок обращения.
+    """
+    Follow-up term.
+    Used to store possible options for medical consultation timing.
+
+    ---
+    Срок обращения.
     Используется для хранения возможных вариантов сроков обращения к врачу.
     """
     __tablename__ = "terms"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(255))
+    name_ru: Mapped[str] = mapped_column(String(255))
+
 
 class Answer(Base):
-    """Результат разметки.
+    """
+    Annotation result.
+    Stores the tooth labeling outcome, including references to the user, tooth,
+    condition, pathology, recommendation, and follow-up term.
+    
+    ---
+    Результат разметки.
     Хранит информацию о результате разметки зуба, ссылки на пользователя, зуб,
     состояние, патологию, рекомендацию и срок обращения.
     """
